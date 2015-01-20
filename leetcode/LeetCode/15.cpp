@@ -39,87 +39,85 @@ vector<vector<int> > threeSum(vector<int> &num)
             newNum.push_back(i->first);
     }
 
-    for (auto i = newMap.begin(); i != newMap.end(); i++)
+    for (auto i = newMap.begin(); i != newMap.end() && i->first < 0; i++)
     {
         int target = 0 - i->first;
-        int incIndex = 0;
-        int decIndex = 0;
-
-        auto it = newMap.find(target);
-
-        for (size_t k = newNum.size() - 1; k > 0 ; k++)
+        int startIndex = 0;
+        for (size_t k = 0; k < newNum.size() - 2; k++)
         {
-            if (it != newMap.end() && it->second == 2)
+            if (newNum[k] == i->first)
             {
-                if (newNum[k] == target)
+                startIndex = k + 1;
+                break;
+            }
+        }
+        if (startIndex == 0)
+            break;
+        int incIndex = startIndex + 1;
+        int decIndex = startIndex;
+        float half = float(target) / 2.0f;
+
+        if (newNum[startIndex] + newNum[startIndex + 1] > target || newNum[newNum.size() - 2] + newNum.back() < target)
+        {
+            continue;
+        }
+        else
+        {
+            for (size_t k = newNum.size() - 1; k > startIndex + 1; k--)
+            {
+                if (target % 2 == 0 && newNum[k] == target / 2)
+                {
+                    if (newNum[k - 1] == target / 2)
+                    {
+                        incIndex = k;
+                        decIndex = k - 1;
+                    }
+                    else
+                    {
+                        incIndex = k + 1;
+                        decIndex = k - 1;
+                    }
+                    break;
+                }
+                else if (float(newNum[k]) > half && float(newNum[k - 1]) < half)
                 {
                     incIndex = k;
                     decIndex = k - 1;
+                    break;
                 }
             }
-            else if (newNum[k] >= target && newNum[k - 1] < target)
-            {
-                incIndex = k;
-                decIndex = k - 1;
-            }
         }
+
         // 2 sum 
-        if (incIndex == 0)
-            continue;
-        while (incIndex < newNum.size() && decIndex > 0)
+        while (incIndex < newNum.size() && decIndex >= startIndex)
         {
             int sum = newNum[incIndex] + newNum[decIndex];
             if (sum == target)
-
-        }
-
-    }
-
-    for (size_t i = 0; i < newNum.size(); i++)
-    {
-        int target = 0 
-
-    }
-    int first = 0;
-    int second = 1;
-    int third = 2;
-    for (size_t i = 2; i < newNum.size(); i++)
-    {
-        if (newNum[i] >= 0)
-        {
-            third = i;
-            break;
-        }
-    }
-    if (newNum[third] < 0)
-        return ret;
-    for (size_t i = 0; i < third; i++)
-    {
-        for (size_t k = third; k < newNum.size(); k++)
-        {
-            for (size_t j = i + 1; j < k; j++)
             {
-                int threeSum = newNum[i] + newNum[j] + newNum[k];
-                if (threeSum > 0)
+                vector<int> value = { i->first, newNum[decIndex], newNum[incIndex] };
+                ret.push_back(value);
+                do
                 {
-                    break;
-                }
-                else if (threeSum < 0)
+                    incIndex++;
+                } while (incIndex < newNum.size() && newNum[incIndex] == newNum[incIndex - 1]);
+                do
                 {
-                    continue;
-                }
-                else
+                    decIndex--;
+                } while (decIndex >= startIndex && newNum[decIndex] == newNum[decIndex + 1]);
+            }
+            else if (sum > target)
+            {
+                do
                 {
-                    vector<int> trip = { newNum[i], newNum[j], newNum[k] };
-                    bool isSame = false;
-                    for (size_t n = 0; n < ret.size(); n++)
-                    {
-                        if (ret[n][0] == trip[0] && ret[n][1] == trip[1] && ret[n][2] == trip[2])
-                            isSame = true;
-                    }
-                    if (!isSame)
-                        ret.push_back(trip);
-                }
+                    decIndex--;
+                } while (decIndex >= startIndex && newNum[decIndex] == newNum[decIndex + 1]);
+            }
+            else
+            {
+                do
+                {
+                    incIndex++;
+                } while (incIndex < newNum.size() && newNum[incIndex] == newNum[incIndex - 1]);
             }
         }
     }
@@ -127,6 +125,8 @@ vector<vector<int> > threeSum(vector<int> &num)
 }
 int main()
 {
+    vector<int> n = { 2, -3, 0, -2, -5, -5, -4, 1, 2, -2, 2, 0, 2, -4 };
+    vector<vector<int>> a = threeSum(n);
     vector<int> nums = { 7, -1, 14, -12, -8, 7, 2, -15, 8, 8, -8, -14, -4, -5, 7, 9, 11, -4, -15, -6, 1, -14, 4, 3, 10, -5, 2, 1, 6, 11, 2, -2, -5, -7, -6, 2, -15, 11, -6, 8, -4, 2, 1, -1, 4, -6, -15, 1, 5, -15, 10, 14, 9, -8, -6, 4, -6, 11, 12, -15, 7, -1, -9, 9, -1, 0, -4, -1, -12, -2, 14, -9, 7, 0, -3, -4, 1, -2, 12, 14, -10, 0, 5, 14, -1, 14, 3, 8, 10, -8, 8, -5, -2, 6, -11, 12, 13, -7, -12, 8, 6, -13, 14, -2, -5, -11, 1, 3, -6 };
     vector<vector<int>> ret = threeSum(nums);
     return 0;
