@@ -2,12 +2,6 @@
 #include <vector>
 using namespace std;
 
-void solveSudoku(vector<vector<char> > &board) 
-{
-
-
-
-}
 
 bool solve(vector<vector<char>>& board, vector<pair<int, int>> & emptyCells)
 {
@@ -23,7 +17,7 @@ bool solve(vector<vector<char>>& board, vector<pair<int, int>> & emptyCells)
             num[board[cell.first][k] - '1'] = false;
     for (size_t k = 0; k < 9 && k != cell.first; k++)
         if (board[k][cell.second] != '.')
-            num[board[k][cell.first] - '1'] = false;
+            num[board[k][cell.second] - '1'] = false;
     int r = cell.first / 3;
     int c = cell.second / 3;
     for (size_t k = 0; k < 3; k++)
@@ -39,10 +33,37 @@ bool solve(vector<vector<char>>& board, vector<pair<int, int>> & emptyCells)
                 return true;
         }
     }
+    board[cell.first][cell.second] = '.';
+    emptyCells.push_back(cell);
     return false;
+}
+
+void solveSudoku(vector<vector<char> > &board)
+{
+    vector<pair<int, int>> emptyCells;
+    for (size_t i = 0; i < 9; i++)
+    {
+        for (size_t k = 0; k < 9; k++)
+        {
+            if (board[i][k] == '.')
+                emptyCells.push_back(make_pair(i, k));
+        }
+    }
+    solve(board, emptyCells);
 }
 
 int main()
 {
+    vector<vector<char>> board = {
+        { '5', '3', '.', '.', '7', '.', '.', '.', '.' },
+        { '6', '.', '.', '1', '9', '5', '.', '.', '.' },
+        { '.', '9', '8', '.', '.', '.', '.', '6', '.' },
+        { '8', '.', '.', '.', '6', '.', '.', '.', '3' },
+        { '4', '.', '.', '8', '.', '3', '.', '.', '1' },
+        { '7', '.', '.', '.', '2', '.', '.', '.', '6' },
+        { '.', '6', '.', '.', '.', '.', '2', '8', '.' },
+        { '.', '.', '.', '4', '1', '9', '.', '.', '5' },
+        { '.', '.', '.', '.', '8', '.', '.', '7', '9' } };
+    solveSudoku(board);
     return 0;
 }
