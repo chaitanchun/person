@@ -42,6 +42,6 @@ int main()
     cout << isMatch("aaa", "aa") << endl;
     cout << isMatch("aa", "a*") << endl;
     cout << isMatch("ab", ".*") << endl;
-    cout << isMatch("aab", "c*a*b") << endl;
+    cout << isMatch("aabbbbaababbabababaabbbbabbabbaabbbabbbabaabbaaaababababbababbabbbbabaaabaaabaabbaaaabbbbabaaabbbbbabbbaabbbbbabaabababaaabaaababaababbaaabaabbabaababbabababaaababbabbabaabbbbabbbbabaabbaababaaabababbabb", "a*b*a*b*aaaa*abaaa**b*a***b*a*bb****ba*ba*b******a********a**baba*ab***a***bbba*b**a*b*ba*a*aaaa*ab**") << endl;
     return 0;
 }
