@@ -1,32 +1,32 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
-
-bool match(string target, string regExp, int min)
-{
-
-}
 
 bool isMatch(const char *s, const char *p) 
 {
-    string target(s);
-    string exp(p);
-    string regExp;
-    regExp.push_back(exp[0]);
-    int num = regExp.back() != '*' ? 1 : 0;
-    for (size_t i = 1; i < exp.size(); i++)
-    {
-        if (exp[i] != '*' || regExp.back() != '*')
-        {
-            regExp.push_back(exp[i]);
-            if (regExp.back() != '*')
-                num++;
+    const int m = strlen(s);
+    const int n = strlen(p);
+    int star = count(p, p + n, '*');
+    if (n - star > m) return false;
+    vector<bool> prev(n + 1, false); 
+    prev[0] = true;
+    for (int j = 1; j <= n; j++)
+        prev[j] = prev[j - 1] && p[j - 1] == '*';
+    for (int i = 1; i <= m; i++) {
+        vector<bool> cur(n + 1, false);
+        for (int j = 1; j <= n; j++) {
+            if (p[j - 1] == '*') {
+                cur[j] = cur[j - 1] || prev[j];
+            }
+            else {
+                cur[j] = prev[j - 1] && (s[i - 1] == p[j - 1] || p[j - 1] == '?');
+            }
         }
+        prev = cur;
     }
-    if (target.size() < num)
-        return false;
-    return match(target, regExp, num);
+    return prev[n];
 }
 
 int main()
