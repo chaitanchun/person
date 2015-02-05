@@ -4,7 +4,7 @@
 using namespace std;
 class Solution {
 public:
-    vector<vector<string> > solveNQueens(int n) 
+    int totalNQueens(int n)
     {
         col.assign(n, false);
         leftCross.assign(2 * n - 1, false);
@@ -16,7 +16,7 @@ public:
             board.push_back(temp);
         }
         solve(n);
-        return ret;
+        return num;
     }
 
 private:
@@ -25,20 +25,6 @@ private:
         if (n == 0)
         {
             num++;
-            vector<string> solu;
-            for (size_t i = 0; i < board.size(); i++)
-            {
-                string retrow;
-                for (size_t k = 0; k < board.size(); k++)
-                {
-                    if (board[i][k])
-                        retrow.push_back('Q');
-                    else
-                        retrow.push_back('.');
-                }
-                solu.push_back(retrow);
-            }
-            ret.push_back(solu);
             return;
         }
 
@@ -63,13 +49,12 @@ private:
     vector<bool> col;
     vector<bool> leftCross;
     vector<bool> rightCross;
-    vector<vector<string>> ret;
     vector<vector<bool>> board;
     int num;
 };
 int main()
 {
     Solution s;
-    s.solveNQueens(4);
+    s.totalNQueens(4);
     return 0;
 }
