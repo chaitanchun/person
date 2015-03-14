@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 using namespace std;
 
  struct TreeNode {
@@ -10,32 +11,43 @@ using namespace std;
 
 class Solution {
 public:
-    bool isValidBST(TreeNode *root) {
-
+    bool isValidBST(TreeNode *root) 
+    {
+        int min, max;
+        return root == NULL ? true : isValid(root, min, max);
     }
 private:
     bool isValid(TreeNode* root, int& min, int& max)
     {
-        if (root == NULL)
-            return true;
-        bool ret = false;
-        int lmin, lmax;
-        int rmin, rmax;
-        ret = ret || isValid(root->left, lmin, lmax);
-        if (!ret)
-            return ret;
-        if (root->left != NULL && root->val <= lmax)
-            return false;
+        bool ret = true;
+        int lmin = root->val;
+        int lmax = root->val;
+        int rmin = root->val;
+        int rmax = root->val;
+        if (root->left != NULL)
+        {
+            ret = isValid(root->left, lmin, lmax);
+            if (!ret || root->left != NULL && root->val <= lmax)
+                return false;
+        }
 
-        ret = ret || isValid(root->right, rmin, rmax);
-        if ()
-
-
+        if (root->right != NULL)
+        {
+            ret = isValid(root->right, rmin, rmax);
+            if (!ret || root->right != NULL && root->val >= rmin)
+                return false;
+        }
+        min = lmin;
+        max = rmax;
         return ret;
     }
 };
 
 int main()
 {
+    Solution s;
+    TreeNode* root = new TreeNode(0);
+    root->left = new TreeNode(-1);
+    bool ret = s.isValidBST(root);
     return 0;
 }
