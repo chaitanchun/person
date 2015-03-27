@@ -13,7 +13,7 @@ string convert(string s, int nRows)
     {
         size_t k = i;
         size_t m = num - i;
-        int dou = true;
+        bool dou = true;
         if (m == i || m == num)
             dou = false;
         for (; k < s.size(); k += num, m += num)
